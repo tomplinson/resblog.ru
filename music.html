@@ -1,0 +1,817 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Music</title>
+    <!-- Bootstrap -->
+    <link href="css/bootstrap-4.3.1.css" rel="stylesheet">
+	<link rel="shortcut icon" href="icon.png" type="image/png">
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
+	<script type="text/javascript" src="http://code.jquery.com/jquery-1.12.4.min.js"></script>    
+<script type="text/javascript" src="http://www.jplayer.org/latest/dist/jplayer/jquery.jplayer.min.js"></script>
+<script type="text/javascript" src="http://www.jplayer.org/latest/dist/add-on/jplayer.playlist.min.js"></script>
+	<style>
+	img[tabindex="0"] {
+  cursor: zoom-in;
+}
+img[tabindex="0"]:focus {
+  position: fixed;
+  z-index: 10;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
+  width: auto;
+  height: auto;
+  max-width: 98%;
+  max-height: 98%;
+  margin: auto;
+  padding: 0px;
+  
+}
+img[tabindex="0"]:focus,  
+img[tabindex="0"]:focus ~ * {
+  pointer-events: none;
+  
+}
+	.thumb-wrap
+			{
+				position: relative;
+				padding-bottom: 40.25%;
+				padding-top: 30px;
+				height: 0;
+				overflow: hidden;
+				margin: 0 auto;
+                max-width: 746px;
+			}
+			.thumb-wrap iframe {
+				position: absolute;
+				top: 0;
+				left: 0;
+				width: 100%;
+				height: 100%;
+			}
+		.clear {
+    clear:both;    
+}
+.jp-row {
+    display:table-row;    
+}
+.jp-jplayer audio,
+.jp-jplayer {
+	margin: 10px;
+    width: 0px;
+    height: 0px; 
+}
+.jp-audio *:focus, 
+.jp-audio-stream *:focus, 
+.jp-video *:focus {
+    outline: none; 
+}
+.jp-audio button::-moz-focus-inner,
+.jp-audio-stream button::-moz-focus-inner,
+.jp-video button::-moz-focus-inner {
+    border: 0; 
+}
+.jp-playlist *, .jp-details * {
+    font-size:16px;
+}
+.jp-interface {
+    border: 1px solid #D5EEFF;    
+    position: relative;
+    background: #C0C0C0;
+    width: 100%; 
+    display:table;
+	box-shadow: 0 0 5px 3px rgba(0,0,0,0.5);
+}
+.jp-interface * {
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;    
+} 
+/*//////////////////*/
+/* Volume */
+/*//////////////////*/
+.jp-volume-controls {
+    width: 130px; 
+    padding:10px;
+    display:table-cell;
+}
+.jp-volume-bar {
+    float:left;    
+    background: #DCDCDC;
+    width: 60px;
+    height: 24px;
+    cursor: pointer; 
+}
+.jp-volume-bar-value {
+    background: #DA70D6;
+    width: 0px;
+    height: 24px;  
+}
+/*//////////////////*/
+/* Control */
+/*//////////////////*/
+.jp-controls {
+    padding:6px;
+    display:table-cell;
+    width:88px;
+    vertical-align:top;
+} 
+/*//////////////////*/
+/* Progress */
+/*//////////////////*/
+.jp-progress {
+    display:table-cell;
+    vertical-align:top;
+    padding:10px;
+}
+.jp-seek-bar {
+    background: #BA55D3;
+    width: 0px;
+    height:8px;
+    cursor: pointer; 
+}
+.jp-play-bar {
+    background: #DA70D6;
+    width: 0px;
+    height:8px;;
+}
+/*//////////////////*/
+/* Toggles*/
+/*//////////////////*/
+.jp-toggles {
+    display:table-cell;
+    vertical-align:top;
+    padding:10px;
+    width:28px;
+}
+/*//////////////////*/
+/* Detals*/
+/*//////////////////*/
+.jp-details {
+    text-align: center;
+    cursor: default; 
+    font-size:13px;
+    padding:8px 0;
+    font-family: Verdana;
+}
+/*//////////////////*/
+/* Playlists*/
+/*//////////////////*/
+.jp-playlist ul {
+    list-style-type: none;
+    margin:10px 0 0 0;
+    padding:0;
+    display:block;
+    counter-reset: li;
+    position:relative;
+}
+.jp-playlist ul li {
+    padding: 5px 0;
+    border-bottom: 1px solid #eee; 
+    font-size:13px;
+    font-family: Verdana; 
+}
+.jp-playlist ul li:before {
+    position: relative;
+    left:-10px;
+    width:20px;
+    font-size: 10px;
+    font-weight: bold;
+    color: #000000;
+    counter-increment: li;
+    content: counter(li);    
+    text-align:right;
+    display:inline-block;
+}
+.jp-playlist li:last-child {
+    border-bottom: none; 
+}
+.jp-playlist li div {
+    display: inline; 
+}
+.jp-playlist a, .jp-playlist span.jp-free-media a {
+    color: #333;
+    text-decoration: none; 
+}
+.jp-playlist a:hover, .jp-playlist a.jp-playlist-current, .jp-playlist a.jp-playlist-item-remove:hover, .jp-playlist span.jp-free-media a:hover  {
+    color: #FFFFFF; 
+	text-shadow: rgba(0,0,0,0.5) 2px 3px 3px;
+}
+.jp-playlist a.jp-playlist-item-remove {
+    float: right;
+    display: inline;
+    text-align: right;
+    margin-right: 10px;
+    font-weight: bold;
+    color: #E6E6FA; 
+}
+.jp-playlist span.jp-free-media {
+    float: right;
+    display: inline;
+    text-align: right;
+    margin-right: 10px; 
+}
+.jp-artist {
+    font-size: 11px;
+    color: #E6E6FA; 
+}
+/*//////////////////*/
+/* Time */
+/*//////////////////*/
+.jp-current-time,
+.jp-duration {
+    width: 50px;
+    font-size: 11px;
+    font-family: Verdana;
+}
+.jp-current-time {
+    float: left;
+}
+.jp-duration {
+    float: right;
+    text-align: right;
+    cursor: pointer; 
+}
+/*//////////////////*/
+/* Buttons */
+/*//////////////////*/
+.jp-controls button, .jp-volume-controls button, .jp-toggles button {
+    display: block;
+    float: left;
+    overflow: hidden;
+    cursor: pointer; 
+    background: #BA55D3;
+    color: #FFF;
+    margin: 4px;
+    width:30px;
+    height:30px;
+    font-size:13px;  
+    border: 0;
+}
+.jp-volume-controls button, .jp-toggles button { 
+    width:24px;
+    height:24px;
+    margin: 0 0 8px 0;
+}    
+.jp-controls button:hover, .jp-volume-controls button:hover, .jp-toggles button:hover {
+    background: #DA70D6;
+	box-shadow: 0 0 5px 3px rgba(0,0,0,0.5);
+    -webkit-transition: background 0.3s ease-in-out;
+    -moz-transition: background 0.3s ease-in-out;
+    -ms-transition: background 0.3s ease-in-out;
+    -o-transition: background 0.3s ease-in-out;
+    transition: background 0.3s ease-in-out;    
+}     
+.jp-state-playing .jp-play i {
+    display:none;
+}
+.jp-state-playing .jp-play:before {
+    font-family: FontAwesome;
+    content: "\f04c";
+}
+.jp-state-looped .jp-repeat, .jp-state-shuffled .jp-shuffle, .jp-shuffle:active, .jp-state-full-screen .jp-full-screen, .jp-full-screen:active  {
+    background: #DA70D6;    
+	box-shadow: 0 0 5px 3px rgba(0,0,0,0.5);
+}
+.jp-stop, .jp-previous, .jp-next {
+    width: 28px;
+    height: 28px;
+margin-top: 6px; }
+ 
+.jp-stop {
+    margin-left: 10px; 
+}
+/*//////////////////*/
+/* Video */
+/*//////////////////*/
+.jp-video .jp-volume-controls {
+    right:80px;
+}
+.jp-video .jp-toggles {
+    width:76px;    
+}
+.jp-video .jp-toggles .jp-full-screen, .jp-video .jp-toggles .jp-shuffle{
+    margin-left:8px;
+}
+.jp-video .jp-type-playlist .jp-toggles  {
+    width:120px;    
+    float:left;
+    padding:0;
+}        
+/*//////////////////*/
+/* Video full */
+/*//////////////////*/    
+.jp-video-full div div {
+    z-index: 1000; 
+}
+.jp-video-full .jp-jplayer {
+    top: 0;
+    left: 0;
+    position: fixed;
+    overflow: hidden; 
+}
+.jp-video-full .jp-gui {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 1001;
+}
+.jp-video-full .jp-interface {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+}
+.jp-video-full .jp-video-play {
+    height: 100%; 
+}
+.jp-video-play {
+    position: relative;
+} 
+/*//////////////////*/
+/* Video icon */
+/*//////////////////*/        
+.jp-video-play-icon {
+    position: absolute;
+    display: block;
+    top: 20px;
+    width:100%;
+    font-size:80px;
+    font-weight:bold;
+    font-family:Tahoma;
+    border: none;
+    cursor: pointer; 
+    color:#77AEDB;
+    background: transparent;
+}
+.jp-video-play-icon:hover {
+    color:#337ab7;
+}
+/*//////////////////*/
+/* no-solution */
+/*//////////////////*/    
+.jp-no-solution {
+    padding: 5px;
+    font-size: .8em;
+    background-color: #eee;
+    border: 2px solid #009be3;
+    color: #000;
+    display: none; 
+}
+.jp-no-solution a {
+    color: #000; 
+}
+.jp-no-solution span {
+    font-size: 1em;
+    display: block;
+    text-align: center;
+    font-weight: bold; 
+}
+/*//////////////////*/
+/* Block 700px */
+/*//////////////////*/
+.b700 .jp-progress, .b700 .jp-controls, .b700 .jp-volume-controls, .b700 .jp-toggles,
+.b450 .jp-progress, .b450 .jp-controls, .b450 .jp-volume-controls, .b450 .jp-toggles
+{
+    display:block;    
+    float:left;
+    width:100%;
+    padding:4px;
+}
+.b700 .jp-volume-controls, .b450 .jp-volume-controls  {
+    float:right;    
+    position:absolute;
+    top:6px;
+    right:48px;
+    width:120px;
+}
+.b700 .jp-toggles, .b450 .jp-toggles  {
+    float:right;    
+    position:absolute;
+    top:6px;
+    right:0;
+    width:38px;    
+}    
+.b700 .jp-details, .b450 .jp-details {
+    padding-top:18px;
+}
+.b700 .jp-type-playlist .jp-volume-controls, .b450 .jp-type-playlist .jp-volume-controls {
+    right:80px;
+}
+.b700 .jp-type-playlist .jp-toggles, .b700 .jp-video .jp-toggles, .b450 .jp-type-playlist .jp-toggles, .b450 .jp-video .jp-toggles {
+    width:70px;    
+}
+.b700 .jp-type-playlist .jp-toggles .jp-shuffle, .b450 .jp-type-playlist .jp-toggles .jp-shuffle{
+    margin-left:8px;
+}
+.b700 .jp-video .jp-type-playlist .jp-toggles, .b450 .jp-video .jp-type-playlist .jp-toggles   {    
+    right:0;
+    top:4px;
+    float:right;
+    width:104px;
+}    
+.b700 .jp-video .jp-type-playlist .jp-volume-controls, .b450 .jp-video .jp-type-playlist .jp-volume-controls   {
+    top:42px;
+    left:5px;
+    width:100%;
+}    
+.b700 .jp-video .jp-type-playlist .jp-progress, .b450 .jp-video .jp-type-playlist .jp-progress{
+    margin-top:32px;
+}
+.b700 .jp-video .jp-volume-controls, .b450 .jp-video .jp-volume-controls {
+    right:80px;
+}
+.b700 .jp-video-play-icon, .b450 .jp-video-play-icon {
+    font-size:50px;
+}
+/*//////////////////*/
+/* Block 450px */
+/*//////////////////*/
+.b450 .jp-type-playlist .jp-volume-controls, .b450 .jp-video .jp-volume-controls {
+    top:42px;
+    left:5px;
+    
+}
+.b450 .jp-type-playlist .jp-toggles, .b450 .jp-video .jp-toggles {
+    right:0;
+    top:42px;
+}
+.b450 .jp-type-playlist .jp-progress, .b450 .jp-video .jp-progress{
+    margin-top:32px;
+    
+}
+/*//////////////////*/
+/* Responsive */
+/*//////////////////*/
+@media screen and (max-width: 700px) {
+    .jp-progress, .jp-controls, .jp-volume-controls, .jp-toggles  {
+        display:block;    
+        float:left;
+        width:100%;
+        padding:4px;
+    }
+    .jp-volume-controls  {
+        float:right;    
+        position:absolute;
+        top:6px;
+        right:48px;
+        width:120px;
+    }
+    .jp-toggles  {
+        float:right;    
+        position:absolute;
+        top:6px;
+        right:0;
+        width:38px;    
+    }    
+    .jp-details {
+        padding-top:18px;
+    }
+    .jp-type-playlist .jp-volume-controls {
+        right:80px;
+    }
+    .jp-type-playlist .jp-toggles, .jp-video .jp-toggles {
+        width:70px;    
+    }
+    .jp-type-playlist .jp-toggles .jp-shuffle{
+        margin-left:8px;
+    }
+    .jp-video .jp-type-playlist .jp-toggles  {    
+        right:0;
+        top:4px;
+        float:right;
+        width:104px;
+    }    
+    .jp-video .jp-type-playlist .jp-volume-controls  {
+        top:42px;
+        left:5px;
+        width:100%;
+    }    
+    .jp-video .jp-type-playlist .jp-progress{
+        margin-top:32px;
+    }
+    .jp-video-play-icon {
+        font-size:50px;
+    }
+    @media screen and (max-width: 450px) {
+        .jp-type-playlist .jp-volume-controls, .jp-video .jp-volume-controls {
+            top:42px;
+            left:5px;
+            
+        }
+        .jp-type-playlist .jp-toggles, .jp-video .jp-toggles {
+            right:0;
+            top:42px;
+        }
+        .jp-type-playlist .jp-progress, .jp-video .jp-progress{
+            margin-top:32px;
+        }
+    }        
+		</style>
+  </head>
+  <body>
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+      <label class="navbar-brand">RE'S Blog</label>
+      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation"> <span class="navbar-toggler-icon"></span> </button>
+      <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <ul class="navbar-nav mr-auto">
+          <li class="nav-item"> <a class="nav-link" href="home.html">Дом</a> </li>
+          <li class="nav-item"> <a class="nav-link" href="relatives.html">Близкие люди</a> </li>
+		  <li class="nav-item"> <a class="nav-link" href="cat.html">Кошка</a> </li>
+          <li class="nav-item"> <a class="nav-link" href="work.html">Работа</a> </li>
+			<li class="nav-item"> <a class="nav-link" href="hobbies.html">Хобби</a> </li>
+			<li class="nav-item"> <a class="nav-link" href="kitchen.html">Бонус</a> </li>
+			<li class="nav-item"> <a class="nav-link" href="books.html">Книги</a> </li>
+			<li class="nav-item active"> <a class="nav-link" href="music.html">Музыка<span class="sr-only">(current)</span></a> </li>
+			<li class="nav-item"> <a class="nav-link" href="games.html">Игры</a> </li>
+			<li class="nav-item"> <a class="nav-link" href="boardgames.html">Настолки</a> </li>
+			<li class="nav-item"> <a class="nav-link" href="poem.html">Стихотворение</a> </li>
+			<li class="nav-item"> <a class="nav-link" href="concerts.html">Концерты</a> </li>
+			<li class="nav-item"> <a class="nav-link" href="others.html">Другие обо мне</a> </li>
+			<li class="nav-item"> <a class="nav-link" href="plans.html">Планы</a> </li>
+        </ul>
+      </div>
+    </nav>
+    <header>
+    </header>
+    <section>
+            <h1>Макс Корж</h1>
+ 
+      <div class="container">
+	  <div class="photos">
+	   <img class="main" src="images\Music\korzh.jpg"  title="Макс Корж" tabindex="0" alt=""> 
+	    <img class="main" src="images\Music\korzh2.jpg" title="Макс Корж" tabindex="0" alt=""> 
+	  </div>
+		   <article>Макс Корж — белорусский певец и автор песен. Свое первое музыкальное видео на песню "Небо поможет нам" Корж выпустил 7 апреля 2012 года.
+		   Видеоклип быстро занял лидирующее место в музыкальных чартах.
+		   А летом 2012 года Макс Корж выпустил первый альбом под названием «Животный мир». В альбом вошло 16 песен, слова которых написал сам певец. В этом же году он подписал контракт с лейблом Respect Production.
+		   Это позволило организовывать концерты не только в Белоруссии, но и в России и на Украине.   <br>
+		 </article>
+		
+	
+		 
+		 <article>
+		 В начале 2013 года была задумана серия концертов «Взлётный март» в Белоруссии, России и на Украине. 
+		 Концерт в Минске прошёл 7 марта 2013 года во Дворце спорта, несмотря на то, что Макс долго сомневался по поводу места проведения этого концерта, 
+		 так как можно было очень здорово «попасть на деньги», ведь далеко не каждый белорусский музыкант сможет собрать такую большую аудиторию. 
+		 На концерт Макса же пришло 6,5 тысяч человек. <br>
+		 Летом 2013 года стал участником Премии Муз-ТВ в номинации «Прорыв года».
+		 2 ноября 2013 года Макс Корж в Минск-Арене презентовал свой второй альбом «Жить в кайф». 
+		 Впервые в музыкальной истории Белоруссии белорусский артист собрал самую крупную площадку страны, вмещающую в себя 13 тысяч человек.  </article>   
+
+<article>	
+		В 2014 году был организован масштабный концертный тур «Вырванный май». 
+		Во время него Максу удалось собрать 6000 зрителей на Футбольном манеже в Минске 10 мая и полный Дворец Спорта Лужники в Москве 24 мая.
+		В октябре 2014 года Макс Корж выпустил свой третий альбом, который получил название «Домашний». 
+		После этого певец отправился в очередной тур с презентацией альбома. Под вывеской «Большой Flat» прошли концерты в странах СНГ и некоторых европейских городах. <br>
+		В 2016 году Макс выпустил альбом «Малый повзрослел (Часть 1)», а в 2017 - вторую часть альбома.
+		22 декабря 2017 с композицией «Малый повзрослел» стал победителем VK Music Awards. 
+		А клип на песню «Малый повзрослел» стал самым просматриваемым среди всех работ исполнителя: на данный момент клип посмотрело уже 117 миллионов зрителей!
+		</article>
+		
+		<article>
+		Сейчас Корж выпускает отдельные синглы и катается по странам СНГ, Европе и США с концертами. В 2019 году Корж собрал огромные стадионы размером в 35 тысяч человек сначала в Минске, а потом в Москве.
+		Несмотря на то что исполнитель не дает интервью, не участвует в музыкальных конкурсах, он продолжает собирать стадионы, а армия верных фанатов не только не забывает его, но и катается за ним по странам и городам, чтобы не пропустить ни один концерт!
+		</article>
+		<script type="text/javascript">
+    //<![CDATA[
+    $(document).ready(function(){
+        new jPlayerPlaylist({
+            jPlayer: "#jquery_jplayer_1",
+            cssSelectorAncestor: "#jp_container_1"
+        }, [
+        {
+            title:"Тает дым",
+            mp3:"music/Тает дым.mp3"
+           
+        },
+        {
+            title:"Малый повзрослел",
+            mp3:"music/Малый повзрослел.mp3"
+        },
+		{
+			title: "Шантаж",
+			mp3: "music/Шантаж.mp3"
+		},
+		{
+			title: "Малолетка",
+			mp3: "music/Малолетка.mp3"
+		},
+		{
+			title: "Контрольный",
+			mp3: "music/Контрольный.mp3"
+		}
+        ], {
+            supplied: "oga, mp3",
+            wmode: "window",
+            useStateClassSkin: true,
+            autoBlur: false,
+            smoothPlayBar: true,
+            keyEnabled: true
+            
+        });    
+    });
+	</script>
+	<div id="jquery_jplayer_1" class="jp-jplayer"></div>
+<div id="jp_container_1" class="jp-audio" role="application" aria-label="media player">
+    <div class="jp-type-playlist">
+        <div class="jp-gui jp-interface">
+            <div class="jp-row">        
+                <div class="jp-controls">
+                    <button class="jp-play" role="button" tabindex="0"><i class="fa fa-play"></i></button>
+                    <button class="jp-stop" role="button" tabindex="0"><i class="fa fa-stop"></i></button>
+                    <button class="jp-previous" role="button" tabindex="0"><i class="fa fa-backward"></i></button>
+                    <button class="jp-next" role="button" tabindex="0"><i class="fa fa-forward"></i></button>
+                </div>
+                <div class="jp-progress">
+                    <div class="jp-seek-bar">
+                        <div class="jp-play-bar"></div>
+                    </div>
+                    <div class="jp-time-holder">
+                        <div class="jp-current-time" role="timer" aria-label="time">&nbsp;</div>
+                        <div class="jp-duration" role="timer" aria-label="duration">&nbsp;</div>
+                    </div>
+                    <div class="clear"></div>
+                    <div class="jp-playlist">
+                        <ul>
+                            <li>&nbsp;</li>
+                        </ul>
+                    </div>                
+                </div>        
+                <div class="jp-volume-controls">
+                    <button class="jp-mute" role="button" tabindex="0"><i class="fa fa-volume-down"></i></button>
+                    <div class="jp-volume-bar">
+                        <div class="jp-volume-bar-value"></div>
+                    </div>
+                    <button class="jp-volume-max" role="button" tabindex="0"><i class="fa fa-volume-up"></i></button>                
+                </div>
+                <div class="jp-toggles">
+                    <button class="jp-repeat" role="button" tabindex="0"><i class="fa fa-repeat"></i></button>
+                    <button class="jp-shuffle" role="button" tabindex="0"><i class="fa fa-random"></i></button>
+                </div>    
+            </div>    
+        </div>            
+        <div class="jp-no-solution">
+            Flash error
+        </div>
+    </div>
+</div>
+		<article></article>
+		<h1>Гарри Стайлс</h1> 
+		<div class="photos">
+	   <img class="main" src="images\Music\harry.jpg" title="Гарри Стайлс" tabindex="0" alt=""> 
+	    <img class="main" src="images\Music\harry2.jpg" title="Гарри Стайлс" tabindex="0" alt=""> 
+	  </div>
+	  <article>История творческого пути исполнителя началась с того, что в 2010 году он, Лиам Пейн, Луи Томлинсон, Найл Хоран и Зейн Малик 
+	  по отдельности пришли на 7 сезон британского проекта The X Factor.
+	  Они не достигли успеха в отборе вокального конкурса и судья Николь Шерзингер предложила конкурсантам объединиться в группу.
+	  Гарри придумал для неё название One Direction и вскоре, под руководством их наставника Саймона Коуэлла, они заняли на проекте 3 место. 
+	  После окончания шоу группа подписала контракт с лейблом Syco Music. В ноябре 2011 года вышел их дебютный альбом Up All Night. 
+	  Далее группа выпустила ещё 4 альбома: Take Me Home (2012), Midnight Memories (2013), Four (2014) и Made in the A.M. (2015). </article>
+	  
+	<article>Несмотря на успех группы, в 2015 году ребята приняли решение заняться своими сольными карьерами.
+	В конце марта 2017 года Стайлс анонсировал свой дебютный сольный сингл под названием «Sign of the Times». 
+	Песня была выпущена 7 апреля и возглавила хит-парады в нескольких странах. Полный альбом, состоящий из 10 песен, вышел 12 мая.
+	В начале марта 2016 года стало известно, что Стайлc сыграет одну из ролей в фильме «Дюнкерк» режиссёра Кристофера Нолана. 
+	Премьера фильма в России состоялась 20 июля 2017 года.
+	В 2017 году исполнитель отправился в тур со своим первым альбомом, который продлился вплоть до 2018 года.
+	А уже 13 ноября 2019 года Стайлс объявил, что отправится в тур со своим вторым альбомом "Fine line", который презентовал только через месяц.
+	</article>
+	<div class="thumb-wrap">
+		<iframe width="560" height="315" src="https://www.youtube.com/embed/pMqHYGuF0NA" frameborder="0" allowfullscreen></iframe>
+	</div>
+	
+	
+	<script type="text/javascript">
+    //<![CDATA[
+    $(document).ready(function(){
+        new jPlayerPlaylist({
+            jPlayer: "#jquery_jplayer_2",
+            cssSelectorAncestor: "#jp_container_2"
+        }, [
+        {
+            title:"Adore you",
+            mp3:"music/Adore_You.mp3"
+           
+        },
+        {
+            title:"Sign of the times",
+            mp3:"music/Sign_of_the_Times.mp3"
+        },
+		{
+			title: "Carolina",
+			mp3: "music/Carolina.mp3"
+		},
+		{
+			title: "Golden",
+			mp3: "music/Golden.mp3"
+		},
+		{
+			title: "Canyon moon",
+			mp3: "music/Canyon_Moon.mp3"
+		}
+        ], {
+            supplied: "oga, mp3",
+            wmode: "window",
+            useStateClassSkin: true,
+            autoBlur: false,
+            smoothPlayBar: true,
+            keyEnabled: true
+            
+        });    
+    });
+	</script>
+	<div id="jquery_jplayer_2" class="jp-jplayer"></div>
+<div id="jp_container_2" class="jp-audio" role="application" aria-label="media player">
+    <div class="jp-type-playlist">
+        <div class="jp-gui jp-interface">
+            <div class="jp-row">        
+                <div class="jp-controls">
+                    <button class="jp-play" role="button" tabindex="0"><i class="fa fa-play"></i></button>
+                    <button class="jp-stop" role="button" tabindex="0"><i class="fa fa-stop"></i></button>
+                    <button class="jp-previous" role="button" tabindex="0"><i class="fa fa-backward"></i></button>
+                    <button class="jp-next" role="button" tabindex="0"><i class="fa fa-forward"></i></button>
+                </div>
+                <div class="jp-progress">
+                    <div class="jp-seek-bar">
+                        <div class="jp-play-bar"></div>
+                    </div>
+                    <div class="jp-time-holder">
+                        <div class="jp-current-time" role="timer" aria-label="time">&nbsp;</div>
+                        <div class="jp-duration" role="timer" aria-label="duration">&nbsp;</div>
+                    </div>
+                    <div class="clear"></div>
+                    <div class="jp-playlist">
+                        <ul>
+                            <li>&nbsp;</li>
+                        </ul>
+                    </div>                
+                </div>        
+                <div class="jp-volume-controls">
+                    <button class="jp-mute" role="button" tabindex="0"><i class="fa fa-volume-down"></i></button>
+                    <div class="jp-volume-bar">
+                        <div class="jp-volume-bar-value"></div>
+                    </div>
+                    <button class="jp-volume-max" role="button" tabindex="0"><i class="fa fa-volume-up"></i></button>                
+                </div>
+                <div class="jp-toggles">
+                    <button class="jp-repeat" role="button" tabindex="0"><i class="fa fa-repeat"></i></button>
+                    <button class="jp-shuffle" role="button" tabindex="0"><i class="fa fa-random"></i></button>
+                </div>    
+            </div>    
+        </div>            
+        <div class="jp-no-solution">
+            Flash error
+        </div>
+    </div>
+</div>
+      </div>
+	  
+      
+            <div class="button">
+				<script>
+    var smoothJumpUp = function() {
+        if (document.body.scrollTop>0 || document.documentElement.scrollTop>0) {
+            window.scrollBy(0,-50);
+            setTimeout(smoothJumpUp, 20);
+        }
+    }
+    
+    window.onscroll = function() {
+      var scrolled = window.pageYOffset || document.documentElement.scrollTop;
+      if (scrolled > 100) {
+      	document.getElementById('upbutton').style.display = 'block';
+      } else {
+      	document.getElementById('upbutton').style.display = 'none';
+      }
+    }
+</script>
+				<button class="glo" onclick="smoothJumpUp(); return false;">Наверх</button> </div>
+          
+      <div class="container">
+        <div class="row"></div>
+        <div class="row"></div>
+      </div>
+    </section>
+    <div class="container">
+      <div class="row"></div>
+    </div>
+     <section class="footer_banner" id="contact">
+    <p class="facts_header">НАПИШИ МНЕ НА ПОЧТУ<br> ДЛЯ СОТРУДНИЧЕСТВА </p>
+    <a href="mailto:katenkaromanchuk90@gmail.com" target="_blank"><div class="subs" href="">НАПИСАТЬ</div> </a>
+	<br><br>
+	<div class="facts_header">&copy;2022 - <strong>ROMANCHUK EKATERINA</strong></div>
+
+  </section>
+    <!-- jQuery (necessary for Bootstrap's JavaScript plugins) --> 
+    <script src="js/jquery-3.3.1.min.js"></script> 
+    <!-- Include all compiled plugins (below), or include individual files as needed --> 
+    <script src="js/popper.min.js"></script> 
+    <script src="js/bootstrap-4.3.1.js"></script>
+  </body>
+</html>
